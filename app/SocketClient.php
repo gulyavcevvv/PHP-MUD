@@ -1,8 +1,8 @@
 <?php
 
-interface SocketClientDelegate {
-	public function clientClosed (SocketClient $sc);
-}
+namespace App;
+
+use App\Contracts\SocketClientDelegate;
 
 // Fixme: no-op any connections if the socket is closed. there might be a need
 // for socket_shutdown, probably requires more digging into unix socket land
@@ -14,7 +14,7 @@ class SocketClient {
 
 	/**
 	 * @param SocketClientDelegate $delegate
-	 * @param resource $socket
+	 * @param $socket
 	 */
 	public function __construct(SocketClientDelegate $delegate, $socket) {
 		$this->delegate = $delegate;

@@ -1,10 +1,15 @@
 <?php
 
-class DisconnectClientException extends Exception {
-	public function __toString() {
-		return $this->getMessage();
-	} // function __toString
-} // class DisconnectClientException
+namespace App;
 
-class SocketException extends Exception {
-} // class SocketException
+class DisconnectClientException extends \Exception
+{
+	public function __toString()
+	{
+		return $this->getMessage();
+	}
+}
+
+class SocketException extends \Exception
+{
+}

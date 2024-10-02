@@ -1,6 +1,13 @@
 <?php
 
-class Server implements SocketServerDelegate {
+declare(ticks=1);
+
+namespace App;
+
+use App\Contracts\SocketServerDelegate;
+
+class Server implements SocketServerDelegate
+{
 
 	private $address;
 	private $port;
@@ -9,13 +16,15 @@ class Server implements SocketServerDelegate {
 
 	private $clientMap = []; // Client -> SocketClient
 	private $socketMap = []; // SocketClient -> Client
-	private $clients = array(); // Connected clients
+	/** @var App\Client[] */
+	private $clients = []; // Connected clients
 	private $socketClients = [];
 	private $run     = TRUE;    // Run the socket loop while true
 
-	public function clientConnected(SocketClient $sc) {
+	public function clientConnected(SocketClient $sc)
+	{
 		$host = $sc->getAddress();
-		Log::info("New client ".$sc->getId()." connected from host: ".$host);
+		Log::info("New client " . $sc->getId() . " connected from host: " . $host);
 		$c = new Client($this);
 		$this->socketClients[$sc->getId()] = $sc;
 		$this->clients[$c->getId()] = $c;
@@ -26,22 +35,25 @@ class Server implements SocketServerDelegate {
 		$c->message('Username: ');
 	}
 
-	private function getSocketClientForClient(Client $c) {
+	private function getSocketClientForClient(Client $c)
+	{
 		$scId = $this->clientMap[$c->getId()];
 		return $this->socketClients[$scId];
 	}
 
-	private function getClientForSocketClient(SocketClient $sc) {
+	private function getClientForSocketClient(SocketClient $sc)
+	{
 		$cId = $this->socketMap[$sc->getId()];
 		return $this->clients[$cId];
 	}
 
 
 	// Already happened, no request.
-	public function clientDisconnected(SocketClient $sc) {
+	public function clientDisconnected(SocketClient $sc)
+	{
 		// If client isn't already gone, kill it
 		if (isset($this->socketClients[$sc->getId()])) {
-			Log::info("Client disconnected: ".$sc->getId());
+			Log::info("Client disconnected: " . $sc->getId());
 			$client = $this->getClientForSocketClient($sc);
 			unset($this->socketClients[$sc->getId()]);
 			unset($this->clientMap[$client->getId()]);
@@ -51,49 +63,55 @@ class Server implements SocketServerDelegate {
 		}
 	}
 
-	public function clientSentMessage(SocketClient $sc, $message) {
-		Log::info("Client changed state: ".$sc->getId());
-		$client = $this->clients[$sc->getId()];
+	public function clientSentMessage(SocketClient $sc, $message)
+	{
+		Log::info("Client changed state: " . $sc->getId());
+		$client = $this->getClientForSocketClient($sc);
 		// handleInput may force a disconnect
 		try {
 			$client->handleInput($message);
-		}
-		catch (DisconnectClientException $e) {
+		} catch (DisconnectClientException $e) {
 			$client->message($e);
 			$client->disconnect();
 		}
 	}
 
-	public function getClients() {
+	public function getClients()
+	{
 		return $this->clients;
-	} // function getClients
+	}
 
-	public function messageAll($message) {
+	public function messageAll($message)
+	{
 		foreach ($this->clients as $client) {
 			$client->message($message);
 		}
-	} // function messageAll
+	}
 
-	private function run() {
+	private function run()
+	{
 		Actions::register();
 		while ($this->run) {
 			$this->socketServer->handleReads();
 		}
-	} // function run
+	}
 
-	public function setAddress($address) {
+	public function setAddress($address)
+	{
 		$this->address = $address;
 		return $this;
 	}
 
-	public function setPort($port) {
+	public function setPort($port)
+	{
 		$this->port = $port;
 		return $this;
 	}
 
-	public function start() {
+	public function start()
+	{
 		if ($this->socketServer !== NULL) {
-			throw new Exception('One server at a time!');
+			throw new \Exception('One server at a time!');
 		}
 
 		Log::info("Binding to port $this->port at $this->address.");
@@ -101,10 +119,19 @@ class Server implements SocketServerDelegate {
 		$socketServer->start($this->address, $this->port);
 		$this->socketServer = $socketServer;
 
+		Tick::callback(Tick::MINUTE, [$this, 'messageTick']);
 		$this->run();
-	} // function start
+	}
 
-	public function stop() {
+	public function messageTick()
+	{
+		foreach ($this->clients as $client) {
+			$client->message('tick');
+		}
+	}
+
+	public function stop()
+	{
 		$this->messageAll('{g*** The server is shutting down now. ***');
 		foreach ($this->clients as $client) {
 			$client->disconnect();
@@ -112,23 +139,22 @@ class Server implements SocketServerDelegate {
 		$this->socketServer->close();
 		$this->run = FALSE;
 		Database::instance()->close();
-	} // function stop
+	}
 
-	public function disconnectClient(Client $client) {
+	public function disconnectClient(Client $client)
+	{
 		$socketClient = $this->getSocketClientForClient($client);
 		$socketClient->close();
 	}
 
-	public function sendMessageToClient($message, Client $client) {
+	public function sendMessageToClient($message, Client $client)
+	{
 		try {
 			$socketClient = $this->getSocketClientForClient($client);
 			$socketClient->write($message);
-		}
-		catch (SocketException $e) {
-			Log::info("Caught socket exception writing to Client ".$client->getId());
+		} catch (SocketException $e) {
+			Log::info("Caught socket exception writing to Client " . $client->getId());
 			$client->disconnect();
 		}
 	}
-
-
-} // class Server
+}

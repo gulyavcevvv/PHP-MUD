@@ -1,6 +1,9 @@
 <?php
 
-class Client {
+namespace App;
+
+class Client
+{
 
 	const State_New           = 1; // Just connected
 	const State_Login         = 2; // Needs to enter password
@@ -20,62 +23,71 @@ class Client {
 	private $user;                        // User object associated with client
 
 	private $server;
-	public function getServer() {
+	public function getServer()
+	{
 		return $this->server;
 	}
 
-	public function __construct(Server $server) {
+	public function __construct(Server $server)
+	{
 		$this->id = md5(spl_object_hash($this));
 		$this->server = $server;
 		$this->position = ++self::$count;
 		$this->state = self::State_New;
-	} // function __construct
+	}
 
-	public function getId() {
+	public function getId()
+	{
 		return $this->id;
 	}
 
-	public function __get($key) {
+	public function __get($key)
+	{
 		if (isset($this->$key))
 			return $this->$key;
 
-		throw new Exception("Invalid property $key in Client object.");
-	} // function __get
+		throw new \Exception("Invalid property $key in Client object.");
+	}
 
-	public function connectionIsGone() {
+	public function connectionIsGone()
+	{
 		$this->state = self::State_Disconnected;
 	}
 
-	public function disconnect() {
+	public function disconnect()
+	{
 		// Ignore duplicate calls
 		if (self::State_Disconnecting === $this->state) {
 			return;
 		}
 		if (self::State_Disconnected === $this->state) {
 			// weird, but log and ignore gracefully
-			Log::info("Client was told to disconnect after already disconnected ".$this->getId());
+			Log::info("Client was told to disconnect after already disconnected " . $this->getId());
 			return;
 		}
 
 		$this->state = self::State_Disconnecting;
 		$this->server->disconnectClient($this);
-	} // function disconnect
+	}
 
-	public function echoOff() {
+	public function echoOff()
+	{
 		if ($this->echo) {
-			$this->send(chr(255).chr(251).chr(1));
+			$this->send(chr(255) . chr(251) . chr(1));
 			$this->echo = false;
 		}
-	} // function echoOff
+	}
 
-	public function echoOn() {
+	public function echoOn()
+	{
 		if (!$this->echo) {
-			$this->send(chr(255).chr(252).chr(1));
+			$this->send(chr(255) . chr(252) . chr(1));
 			$this->echo = true;
 		}
-	} // function echoOn
+	}
 
-	public function handleInput($input) {
+	public function handleInput($input)
+	{
 		$this->messageSent = false;
 		if (self::State_Logged_In != $this->state) {
 			$this->handleLogin($input);
@@ -84,9 +96,10 @@ class Client {
 
 		Actions::perform($this, $input);
 		$this->prompt();
-	} // function handleInput
+	}
 
-	public function handleLogin($input) {
+	public function handleLogin($input)
+	{
 		switch ($this->state) {
 			case self::State_New:
 				$this->user = new User($input);
@@ -95,20 +108,19 @@ class Client {
 					$this->state = self::State_Login;
 					$this->message('Password: ');
 					$this->echoOff();
-				}
-				else {
+				} else {
 					$this->state = self::State_Registering;
 					$this->message("Welcome, {$this->user->name}. Please set a password.");
 					$this->echoOff();
 				}
-			return;
+				return;
 
 			case self::State_Registering:
 				$this->user->register($input);
 				$this->echoOn();
 				$this->message("Thanks for registering. You're in.");
 				$this->state = self::State_Logged_In;
-			return;
+				return;
 
 			case self::State_Login:
 				if ($this->user->login($input)) {
@@ -116,40 +128,44 @@ class Client {
 					$this->message('Login successful!');
 					$this->state = self::State_Logged_In;
 					$this->prompt();
-				}
-				else {
+				} else {
 					if (++$this->failedLoginAttempts >= 3)
 						throw new DisconnectClientException('Too many failed login attempts.');
 
 					$this->message('Invalid password. Try again.');
 					$this->message('Password: ');
 				}
-			return;
+				return;
 		}
-	} // function handleLogin
+	}
 
-	public function message($message) {
-		if ($this->state == self::State_Disconnecting ||
-		$this->state == self::State_Disconnected)
+	public function message($message)
+	{
+		if (
+			$this->state == self::State_Disconnecting ||
+			$this->state == self::State_Disconnected
+		)
 			return;
 
 		$sol = ($this->messageSent || !$this->echo) ? "\n\r" : '';
 		$this->send($sol . color($message));
 		$this->messageSent = true;
-	} // function message
+	}
 
-	public function prompt() {
+	public function prompt()
+	{
 		$this->message("{$this->user->name}'s prompt ---> ");
-	} // function prompt
+	}
 
-	public function quit() {
+	public function quit()
+	{
 		$this->message('{r** DISCONNECTING **');
 		$this->disconnect();
-	} // function quit
-	
-	// Send string with no additional formatting (CRLF, etc)
-	private function send($message) {
-		$this->server->sendMessageToClient($message, $this);
-	} // function send
+	}
 
-} // class Client
+	// Send string with no additional formatting (CRLF, etc)
+	private function send($message)
+	{
+		$this->server->sendMessageToClient($message, $this);
+	}
+}

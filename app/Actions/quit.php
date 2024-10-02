@@ -1,13 +1,25 @@
 <?php
 
-class quit implements Action {
+namespace App\Actions;
 
-	public static function ok(Client $client) {
+use App\Contracts\Action;
+use App\Client;
+
+class Quit implements Action
+{
+
+	public static function synonyms(): array
+	{
+		return ['выйти'];
+	}
+
+	public static function ok(Client $client)
+	{
 		return true;
-	} // function ok
+	}
 
-	public static function run(Client $client, $cmd, $arg) {
+	public static function run(Client $client, $cmd, $arg)
+	{
 		$client->quit();
-	} // function run
-
-} // class quit
+	}
+}

@@ -1,13 +1,28 @@
 <?php
 
-class score implements Action {
 
-	public static function ok(Client $client) {
+namespace App\Actions;
+
+use App\Contracts\Action;
+use App\Client;
+
+class Score implements Action
+{
+	public static function synonyms(): array
+	{
+		return ['счет'];
+	}
+
+
+	public static function ok(Client $client)
+	{
 		return true;
-	} // function ok
+	}
 
-	public static function run(Client $client, $cmd, $arg) {
-		$client->message(<<<FOO
+	public static function run(Client $client, $cmd, $arg)
+	{
+		$client->message(
+			<<<FOO
 {R                                          ________________{0
 {R ________________________________________/{xlord{xfirehed{x
 {R| {xYou aregod of war{x
@@ -33,7 +48,6 @@ class score implements Action {
 {R| {0You have {W0{0 ticks in the corner
 {R ----------------------------------------------------------{x
 FOO
-);
-	} // function run
-
-} // class score
+		);
+	}
+}

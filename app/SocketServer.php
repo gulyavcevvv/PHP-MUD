@@ -1,12 +1,14 @@
 <?php
 
-interface SocketServerDelegate {
-	function clientConnected(SocketClient $sc);
-	function clientDisconnected(SocketClient $sc);
-	function clientSentMessage(SocketClient $sc, $message);
-}
+namespace App;
+
+use App\Contracts\SocketServerDelegate;
+use App\Contracts\SocketClientDelegate;
 
 class SocketServer implements SocketClientDelegate {
+
+	private $address;
+	private $port;
 
 	private $clients = [];     // SocketClient objects
 	private $connections = []; // Raw client resources (required for reading)
@@ -40,10 +42,10 @@ class SocketServer implements SocketClientDelegate {
 	 */
 	public function setTimeout($timeout) {
 		if (!is_int($timeout) && !is_float($timeout)) {
-			throw new Exception(__METHOD__." must be passed a positive number");
+			throw new \Exception(__METHOD__." must be passed a positive number");
 		}
 		if ($timeout <= 0) {
-			throw new Exception(__METHOD__." must be passed a positive number");
+			throw new \Exception(__METHOD__." must be passed a positive number");
 		}
 		$this->timeoutSec = (int) $timeout; // interger part (implicit floor)
 		$this->timeoutUsec = $timeout * 1000000 % 1000000; // fractional part, µs
@@ -59,7 +61,7 @@ class SocketServer implements SocketClientDelegate {
 			$this->domain = $domain;
 			return $this;
 		default:
-			throw new Exception("Domain must be one of AF_INET, AF_INET6, AF_UNIX");
+			throw new \Exception("Domain must be one of AF_INET, AF_INET6, AF_UNIX");
 		}
 	}
 
@@ -73,9 +75,9 @@ class SocketServer implements SocketClientDelegate {
 		case SOCK_SEQPACKET:
 		case SOCK_RAW:
 		case SOCK_RDM:
-			throw new Exception("Not sure if that type is safe, rejecting");
+			throw new \Exception("Not sure if that type is safe, rejecting");
 		default:
-			throw new Execption("Type must be one of SOCK_XXX constants");
+			throw new \Exception("Type must be one of SOCK_XXX constants");
 		}
 	}
 
@@ -88,11 +90,11 @@ class SocketServer implements SocketClientDelegate {
 		socket_set_nonblock($socket);
 
 		if (!socket_bind($socket, $address, $port)) {
-			throw new Exception("Can't bind to $address:$port.");
+			throw new \Exception("Can't bind to $address:$port.");
 		}
 
 		if (!socket_listen($socket)) {
-			throw new Exception("Could not start listening");
+			throw new \Exception("Could not start listening");
 		}
 		$this->socket = $socket;
 		$this->started = true;
@@ -115,9 +117,6 @@ class SocketServer implements SocketClientDelegate {
 		$this->started = false;
 	}
 
-	/**
-	 * @return resource or null
-	 */
 	private function accept() {
 		if ($raw = socket_accept($this->socket)) {
 			return $raw;

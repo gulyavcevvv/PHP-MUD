@@ -1,8 +1,13 @@
 <?php
 
+namespace App;
+
+use App\Database;
 abstract class ORM {
 
 	protected static $db; // Shared database connection
+	protected static $PK;
+	protected static $table;
 
 	protected $changed = FALSE; // Have any properties changed?
 	protected $data;            // Generic key/value store for data
@@ -15,17 +20,17 @@ abstract class ORM {
 		$s->store_result();
 		$this->_load($PK, $s);
 		$s->close();
-	} // function __construct
+	}
 
-	abstract protected function _load($PK, MySQLI_Stmt $s);
+	abstract protected function _load($PK, \MySQLI_Stmt $s);
 
 	public function __get($key) {
 		return $this->data->$key;
-	} // function __get
+	}
 
 	public function __set($key, $value) {
 		$this->data->$key = $value;
 		$this->changed = TRUE;
-	} // function __set
+	}
 
-} // class ORM
+}

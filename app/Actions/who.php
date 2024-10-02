@@ -1,15 +1,26 @@
 <?php
 
-class who implements Action {
+namespace App\Actions;
 
-	public static function ok(Client $client) {
+use App\Contracts\Action;
+use App\Client;
+
+class Who implements Action
+{
+	public static function synonyms(): array
+	{
+		return ['кто', 'who'];
+	}
+
+	public static function ok(Client $client)
+	{
 		return true;
-	} // function ok
+	}
 
-	public static function run(Client $client, $cmd, $arg) {
+	public static function run(Client $client, $cmd, $arg)
+	{
 		foreach ($client->getServer()->getClients() as $c) {
 			$client->message('[some info...] ' . $c->user->name);
 		}
-	} // function run
-
-} // class who
+	}
+}
