@@ -5,6 +5,8 @@ declare(ticks=1);
 namespace App;
 
 use App\Contracts\SocketServerDelegate;
+use App\Log;
+use App\SocketClient;
 
 class Server implements SocketServerDelegate
 {
@@ -16,7 +18,7 @@ class Server implements SocketServerDelegate
 
 	private $clientMap = []; // Client -> SocketClient
 	private $socketMap = []; // SocketClient -> Client
-	/** @var App\Client[] */
+	/** @var \App\Client[] */
 	private $clients = []; // Connected clients
 	private $socketClients = [];
 	private $run     = TRUE;    // Run the socket loop while true

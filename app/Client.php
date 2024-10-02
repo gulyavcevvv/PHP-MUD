@@ -5,21 +5,21 @@ namespace App;
 class Client
 {
 
-	const State_New           = 1; // Just connected
-	const State_Login         = 2; // Needs to enter password
-	const State_Logged_In     = 3; // Logged in
-	const State_Registering   = 4; // In the registration process
-	const State_Disconnecting = 5;
-	const State_Disconnected  = 6;
+	const State_New           = 1; // Только что подключился
+	const State_Login         = 2; // Нужно ввести пароль
+	const State_Logged_In     = 3; // Авторизован
+	const State_Registering   = 4; // Регистрируется
+	const State_Disconnecting = 5; // Отключается
+	const State_Disconnected  = 6; // Отключен
 
-	private static $count = 0; // Number of connected clients
+	private static $count = 0; // Количество подключенных клиентов
 
 	private $id;
 	private $echo                = true;  // Keep track of telnet echo status
-	private $failedLoginAttempts = 0;     // Failed login attempts on this connection
+	private $failedLoginAttempts = 0;     // Количество неудачных попыток входа
 	private $messageSent         = false; // Whether anything has been sent to the client in this loop
 	private $position;                    // Position in server's client array
-	private $state;                       // Client state
+	private $state;                       // Состояние клиента
 	private $user;                        // User object associated with client
 
 	private $server;
