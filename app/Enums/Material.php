@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Material
+enum Material: int
 {
     case NO_MATERIAL = 0; // Нет материала
     case PEWTER = 1; // Олово
