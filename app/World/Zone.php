@@ -2,11 +2,12 @@
 
 namespace App\World;
 
-use ResetCondition;
+use App\Enums\ResetCondition;
 
 class Zone {
 
     private $id;
+    private $vnum;
     private $name;
     private $start;
     private $stop;
@@ -14,8 +15,11 @@ class Zone {
     private ResetCondition $reset_condition;
     private $description;
 
+    private static $rooms = [];
+
     public function __construct($id, $name, $start, $stop, $reset_period, $reset_condition, $description) {
         $this->id = $id;
+        $this->vnum = $start/100;
         $this->name = $name;
         $this->start = $start;
         $this->stop = $stop;
@@ -26,6 +30,10 @@ class Zone {
 
     public function getId() {
         return $this->id;
+    }
+
+    public function getVnum() {
+        return $this->vnum;
     }
 
     public function getName() {
@@ -52,4 +60,11 @@ class Zone {
         return $this->description;
     }
 
+    public function getRooms() {
+        return $this->rooms;
+    }
+
+    public function addRoom(Room $room) {
+        $this->rooms[] = $room;
+    }
 }

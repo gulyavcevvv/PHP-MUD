@@ -93,6 +93,7 @@ class Server implements SocketServerDelegate
 	private function run()
 	{
 		Actions::register();
+		Zones::register();
 		while ($this->run) {
 			$this->socketServer->handleReads();
 		}

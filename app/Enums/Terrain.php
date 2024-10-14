@@ -23,21 +23,21 @@ enum Terrain: int
     function label($value)
     {
         return match ($this) {
-            static::ROOM => 'Внутри помещения',
-            static::CITY => 'Улицы города',
-            static::FIELD => 'Открытое поле',
-            static::FOREST => 'Густой лес',
-            static::HILLS => 'Низкие холмы',
-            static::MOUNTAINS => 'Высокие горы',
-            static::SHALLOW_WATER => 'Вода, можно плавать',
-            static::DEEP_WATER => 'Вода, нельзя плавать',
-            static::UNDERWATER => 'Под водой',
-            static::AIR => 'В воздухе',
-            static::ROAD => 'Дальняя дорога',
-            static::SWAMP => 'Болото и т.п. сырая тяжелая местность',
-            static::THIN_FOREST => 'Почти как ПОЛЕ, с легкими эфектами ЛЕСа',
-            static::JUNGLE => 'Очень густой лес, не проехать верхом, сложнее освещать соседние комнаты',
-            static::TREE => 'На дереве, на мачте корабля и в т.п. ситуациях, где узко, неустойчиво и высоко',
+            static::ROOM => 'ПОМЕЩЕНИЕ',
+            static::CITY => 'ГОРОД',
+            static::FIELD => 'ПОЛЕ',
+            static::FOREST => 'ЛЕС',
+            static::HILLS => 'ХОЛМЫ',
+            static::MOUNTAINS => 'ГОРЫ',
+            static::SHALLOW_WATER => 'МЕЛКОВОДЬЕ',
+            static::DEEP_WATER => 'ГЛУБОКОВОДЬЕ',
+            static::UNDERWATER => 'ПОДВОДОЙ',
+            static::AIR => 'ВОЗДУХ',
+            static::ROAD => 'ДОРОГА',
+            static::SWAMP => 'БОЛОТО',
+            static::THIN_FOREST => 'РЕДКИЙЛЕС',
+            static::JUNGLE => 'ДЖУНГЛИ',
+            static::TREE => 'НАДЕРЕВЕ',
         };
     }
 }
