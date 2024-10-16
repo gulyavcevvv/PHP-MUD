@@ -18,7 +18,7 @@ enum Liquid: int
     case BLOOD = 11; // Кровь
     case SALTWATER = 12; // Соленая вода
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::WATER => 'Вода',

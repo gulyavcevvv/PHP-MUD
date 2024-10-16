@@ -15,7 +15,9 @@ class Zone {
     private ResetCondition $reset_condition;
     private $description;
 
-    private static $rooms = [];
+    private static $rooms = array();
+	private static $mobs = array();
+	private static $objs = array();
 
     public function __construct($id, $name, $start, $stop, $reset_period, $reset_condition, $description) {
         $this->id = $id;
@@ -65,6 +67,14 @@ class Zone {
     }
 
     public function addRoom(Room $room) {
-        $this->rooms[] = $room;
+        $this->rooms[$room->getId()] = $room;
+    }
+
+    public function addMob(Mob $mob) {
+        $this->mobs[$mob->getId()] = $mob;
+    }
+
+    public function addObj(Obj $obj) {
+        $this->objs[$obj->getId()] = $obj;
     }
 }

@@ -20,7 +20,7 @@ enum Terrain: int
     case JUNGLE = 13; // Очень густой лес, не проехать верхом, сложнее освещать соседние комнаты
     case TREE = 14; // На дереве, на мачте корабля и в т.п. ситуациях, где узко, неустойчиво и высоко
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::ROOM => 'ПОМЕЩЕНИЕ',

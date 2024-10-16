@@ -25,7 +25,7 @@ enum Race: int
     case DEVICE = 28; // Искуственные механические и магические творения, например големы, см.также флаг МАГИЧЕСКИЙ
     case GIANT = 29; // Гуманоиды огромных размеров, в т.ч. тролли
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::HUMAN => 'Человек',

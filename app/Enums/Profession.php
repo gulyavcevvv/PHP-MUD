@@ -17,7 +17,7 @@ enum Profession: int
     case KYRIJOLITH = 10; // Жрец Кири-Джолита
     case NO_PROFESSION = 11; // Нет профессии
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::MAGICIAN => 'Маг',

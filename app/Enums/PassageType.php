@@ -19,7 +19,7 @@ enum PassageType: int
     case PASSAGE = 13; // Проход
     case BREACH = 14; // Пролом
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::DOOR => 'Дверь',

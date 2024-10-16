@@ -21,7 +21,7 @@ enum ImpactType: int
     case BITE = 14; // УКУСИТЬ
     case SMACK = 15; // СТУКНУТЬ
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::HIT => 'УДАРИТЬ',

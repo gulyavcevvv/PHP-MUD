@@ -13,13 +13,9 @@ enum RoomProperty: int
     case NO_TRACKS = 7; // Умение ВЫСЛЕДИТЬ не работает
     case NO_MAGIC = 8; // Магия не работает
     case NARROW = 9; // Только один персонаж может быть здесь одновременно
-    case UNKNOWN = 10; // (не используется)
     case SECRET = 11; // Секретная комната
     case DANGER = 12; // Не может быть точкой прибытия "слова возвращения"
-    case UNKNOWN = 13; // (не используется)
-    case UNKNOWN = 14; // (не используется)
     case LIGHT = 15; // Всегда светлая
-    case UNKNOWN = 16; // (не используется)
     case NO_RIDERS = 17; // Ездовые существа не могут зайти
     case REST = 18; // Комната отдыха
     case FOG = 19; // Не видно соседних комнат, даже если там светло
@@ -33,4 +29,35 @@ enum RoomProperty: int
     case NEUTRALITY = 27; // ЛАБОРАТОРИЯ и АЛТАРЬ для нейтральных
     case EVIL = 28; // ЛАБОРАТОРИЯ и АЛТАРЬ для злых
     case NOISE = 29; // В комнате не заучиваются заклинания
+
+    function label()
+    {
+        return match ($this) {
+            static::DARKNESS => 'ТЕМНОТА',
+            static::DEATH => 'СМЕРТЬ',
+            static::NO_MONSTERS => 'НЕТМОНСТРОВ',
+            static::INSIDE => 'ВНУТРИ',
+            static::PEACE => 'МИР',
+            static::NO_COMMUNICATION => 'НЕТСВЯЗИ',
+            static::NO_TRACKS => 'НЕТСЛЕДОВ',
+            static::NO_MAGIC => 'НЕТМАГИИ',
+            static::NARROW => 'УЗКАЯ',
+            static::SECRET => 'СЕКРЕТ',
+            static::DANGER => 'ОПАСНОСТЬ',
+            static::LIGHT => 'СВЕТ',
+            static::NO_RIDERS => 'НЕТЕЗДОВЫХ',
+            static::REST => 'ОТДЫХ',
+            static::FOG => 'ТУМАН',
+            static::NO_TRANSFER => 'НЕТПЕРЕМЕЩЕНИЯ',
+            static::LABORATORY => 'ЛАБОРАТОРИЯ',
+            static::ALTAR => 'АЛТАРЬ',
+            static::ROTATION => 'ВРАЩЕНИЕ',
+            static::DUMP => 'СВАЛКА',
+            static::NATURE => 'ПРИРОДА',
+            static::GOOD => 'ДОБРО',
+            static::NEUTRALITY => 'НЕЙТРАЛЬНОСТЬ',
+            static::EVIL => 'ЗЛО',
+            static::NOISE => 'ШУМ',
+        };
+    }
 }

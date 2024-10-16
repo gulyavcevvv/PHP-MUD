@@ -28,7 +28,7 @@ enum PProperty: int
     case PERSONAL = 22; // Предмет не может брать никто кроме его владельца
     case INCOMPREHENSIBLE = 23; // "Знание свойств" бессильно на этот предмет
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::LIGHTNING => 'Светящийся',

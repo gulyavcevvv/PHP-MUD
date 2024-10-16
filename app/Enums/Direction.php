@@ -11,7 +11,7 @@ enum Direction: int
     case UP = 4;
     case DOWN = 5;
 
-    function label($value)
+    function label()
     {
         return match($this) {
             static::NORTH =>  'север',

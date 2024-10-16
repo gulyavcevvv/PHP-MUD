@@ -2,7 +2,7 @@
 
 namespace App\World;
 
-class Monster {
+class Mob {
     private $id;
     private $name;
     private $greeting;

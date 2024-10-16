@@ -13,7 +13,7 @@ enum Movement: int
     case LEAP = 6; // Припрыгал/упрыгал
     case SWIM = 7; // Приплыл/уплыл
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::WALK => 'Пришел/ушел',

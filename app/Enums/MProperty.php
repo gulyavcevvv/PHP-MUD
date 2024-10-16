@@ -36,7 +36,7 @@ enum MProperty: int
     case BANKER = 30; // Банкир
     case POSTMAN = 31; // Почтальон
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::RETURN => 'Возвращение',

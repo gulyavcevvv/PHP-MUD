@@ -24,7 +24,7 @@ enum CharacterType: int
     case BARBARIAN = 25; // Варвары
     case GOBLIN = 26; // Гоблины
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::GOOD => 'Добрые',

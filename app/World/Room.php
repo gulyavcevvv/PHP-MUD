@@ -3,6 +3,7 @@
 namespace App\World;
 
 use App\Enums\Direction;
+use App\Enums\RoomProperty;
 use App\Enums\Terrain;
 
 class Room
@@ -13,7 +14,7 @@ class Room
     private $location;
     private $exits;
     private $properties;
-    private $monsters;
+    private $mobs;
     private $items;
 
     public function __construct() {}
@@ -50,7 +51,7 @@ class Room
 
     public function getMonsters()
     {
-        return $this->monsters;
+        return $this->mobs;
     }
 
     public function getItems()
@@ -73,9 +74,8 @@ class Room
         $this->description = $description;
     }
 
-    public function setLocation($location)
+    public function setLocation(Terrain $location)
     {
-        //$this->location = Terrain::from($location);
         $this->location = $location;
     }
 
@@ -86,14 +86,21 @@ class Room
 
     public function setProperties($properties)
     {
-        $this->properties = $properties;
+        $this->properties = [];
+        foreach ($properties as $key => $value) {
+            $this->properties[$properties->value] = $properties;
+        }
     }
 
-    public function setMonsters($monsters)
+    public function addProperties(RoomProperty $properties)
     {
-        $this->monsters = $monsters;
+        $this->properties[$properties->value] = $properties;
     }
 
+    public function setMobs($mobs)
+    {
+        $this->mobs = $mobs;
+    }
 
     public function setItems($items)
     {
@@ -103,5 +110,10 @@ class Room
     public function addItems($item)
     {
         $this->items[] = $item;
+    }
+
+    public function addMobs($mob)
+    {
+        $this->mobs[] = $mob;
     }
 }

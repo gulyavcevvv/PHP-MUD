@@ -27,7 +27,7 @@ enum ShopItemType: int
     case BOARD = 25; // Доска объявлений
     case RECEIPT = 26; // Расписка на ездовое животное
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::LIGHT => 'Источник света',

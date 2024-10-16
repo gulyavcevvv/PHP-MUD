@@ -39,3 +39,5 @@ define('VERBOSE', isset($opts['v']));
 
 define('DEBUG', isset($opts['v']) && count($opts['v']) == 2);
 
+define('PATH_TO_FOLDER_DATA', $pathToFolderData);
+

@@ -12,7 +12,7 @@ enum Position: int
     case SITTING = 5; // Сидит
     case STANDING = 6; // Стоит
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::DEAD => 'Мертв',

@@ -46,7 +46,7 @@ enum Material: int
     case LIQUID = 46; // Жидкость
     case GAS = 47; // Газ
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::NO_MATERIAL => 'Нет материала',

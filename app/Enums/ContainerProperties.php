@@ -11,7 +11,7 @@ enum ContainerProperties: int
     case DEAD = 5; // В контейнер ничего нельзя класть
     case UNKNOWN = 6; // Для областей не используется - труп персонажа
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::CLOSES => 'Можно закрыть',

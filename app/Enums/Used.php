@@ -26,7 +26,7 @@ enum Used: int
     case AUXILIARY = 19; // Используется как вспомогательное оружие
     case TWO_HANDED = 20; // Используется как двуручное оружие 
 
-    function label($value)
+    function label()
     {
         return match($this) {
             static::TAKE => 'Поднимается с земли',
@@ -50,6 +50,5 @@ enum Used: int
             static::AUXILIARY => 'Используется как вспомогательное',
             static::TWO_HANDED => 'Используется как двуручное оружие',
         };
-
     }
 }

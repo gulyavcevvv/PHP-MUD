@@ -17,7 +17,7 @@ enum PassageTraits: int
     case DIFFERENT_KEYS = 11; //
     case DIFFERENT_DIFFICULTY = 12; //
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::UNUSED => 'Не используется',

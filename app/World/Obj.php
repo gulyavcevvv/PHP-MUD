@@ -2,7 +2,7 @@
 
 namespace App\World;
 
-class Item {
+class Obj {
     private $id;
     private $name;
     private $description_short;

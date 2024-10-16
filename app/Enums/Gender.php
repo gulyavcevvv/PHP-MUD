@@ -9,7 +9,7 @@ enum Gender: int
     case FEMALE = 2; // Женский род
     case PLURAL = 3; // Множественное число
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::NEUTER => 'Средний род',

@@ -14,7 +14,7 @@ enum WeaponType: int
     case RANGED = 7; // Стрелковое оружие
     case STAFF = 15; // Посохи
 
-    function label($value)
+    function label()
     {
         return match ($this) {
             static::UNK => 'Рукопашный бой',
