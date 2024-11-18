@@ -3,6 +3,8 @@
 namespace App\World;
 
 use App\Enums\Direction;
+use App\Enums\PassageSigns;
+use App\Enums\PassageType;
 use App\Enums\RoomProperty;
 use App\Enums\Terrain;
 
@@ -81,20 +83,35 @@ class Room
 
     public function setExits($exits, Direction $direction)
     {
-        $this->exits[$direction->value] = $exits;
+        $this->exits[$direction->value]['room'] = $exits;
+    }
+
+    public function setDescriptionExits($description, Direction $direction)
+    {
+        $this->exits[$direction->value]['description'] = $description;
+    }
+
+    public function setTypeExits(PassageType $type, Direction $direction)
+    {
+        $this->exits[$direction->value]['type'] = $type;
+    }
+
+    public function addSignsExits(PassageSigns $property, Direction $direction)
+    {
+        $this->exits[$direction->value]['signs'][$property->value] = $property;
     }
 
     public function setProperties($properties)
     {
         $this->properties = [];
-        foreach ($properties as $key => $value) {
-            $this->properties[$properties->value] = $properties;
+        foreach ($properties as $property) {
+            $this->properties[$property->value] = $property;
         }
     }
 
-    public function addProperties(RoomProperty $properties)
+    public function addProperties(RoomProperty $property)
     {
-        $this->properties[$properties->value] = $properties;
+        $this->properties[$property->value] = $property;
     }
 
     public function setMobs($mobs)

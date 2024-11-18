@@ -7,6 +7,8 @@ use App\Client;
 use App\World\Zone;
 use App\World\Room;
 use App\Enums\Direction;
+use App\Enums\PassageSigns;
+use App\Enums\PassageType;
 use App\Enums\RoomProperty;
 use App\Enums\Terrain;
 
@@ -178,6 +180,86 @@ class Zones
 
 				case 'ВНИЗ':
 					$current_room->setExits((int)$matches[1], Direction::DOWN);
+					$is_description = false;
+					break;
+
+				case 'ОСЕВЕР':
+					$current_room->setDescriptionExits($matches[1], Direction::NORTH);
+					$is_description = false;
+					break;
+	
+				case 'ОВОСТОК':
+					$current_room->setDescriptionExits($matches[1], Direction::EAST);
+					$is_description = false;
+					break;
+	
+				case 'ОЮГ':
+					$current_room->setDescriptionExits($matches[1], Direction::SOUTH);
+					$is_description = false;
+					break;
+
+				case 'ОЗАПАД':
+					$current_room->setDescriptionExits($matches[1], Direction::WEST);
+					$is_description = false;
+					break;
+
+				case 'ОВВЕРХ':
+					$current_room->setDescriptionExits($matches[1], Direction::UP);
+					$is_description = false;
+					break;
+
+				case 'ОВНИЗ':
+					$current_room->setDescriptionExits($matches[1], Direction::DOWN);
+					$is_description = false;
+					break;
+
+				case 'ПРОХОД':
+					$str_prohod = $matches[1];
+					while (strpos($str_prohod, ')') === false) {
+						$line = fgets($file);
+						$str_prohod .= ':' . trim($line);
+					}
+
+					$str_prohod = trim($str_prohod, "(");
+					$str_prohod = trim($str_prohod, ")");
+					$str_prohod = trim($str_prohod);
+
+					$values_prohod = explode(':', $str_prohod);
+
+					foreach ($values_prohod as $value_prohod) {
+						$matches_prohod = explode(' ', trim($value_prohod), 2);
+						
+						switch (trim($matches_prohod[0])) {
+							case 'НАПРАВЛЕНИЕ':
+								$direction = Direction::findLabel($matches_prohod[1]);
+								break;
+							
+							case 'ТИП':
+								if (isset($direction)) {
+									$current_room->setTypeExits(PassageType::findLabel($matches_prohod[1]), $direction);
+								}
+								else {
+									Log::error("Попутка установить тип прохода для неизвестного направления");
+								}
+								break;
+
+							case 'ПРИЗНАКИ':
+								if (isset($direction)) {
+
+									$sings_prohod = explode(' ', $matches_prohod[1]);
+									foreach ($sings_prohod as $value) {
+										$current_room->addSignsExits(PassageSigns::findLabel($value), $direction);	
+									}
+									
+								}
+								else {
+									Log::error("Попутка установить признаки прохода для неизвестного направления");
+								}
+								break;
+						}
+
+					}
+						
 					$is_description = false;
 					break;
 	

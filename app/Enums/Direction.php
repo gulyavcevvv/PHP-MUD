@@ -22,4 +22,18 @@ enum Direction: int
             static::DOWN => 'вниз',
         };
     }
+
+    public static function findLabel($label): static
+    {
+        $label = mb_strtoupper(trim($label));
+
+        foreach (self::cases() as $value) {
+            if (mb_strtoupper($value->label()) == $label) {
+                return $value;
+            }
+        }
+
+        throw new \Exception("Error Processing Request", 1);
+        
+    }
 }

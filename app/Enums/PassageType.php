@@ -9,7 +9,7 @@ enum PassageType: int
     case WINDOW = 3; // Окно
     case HATCH = 4; // Люк
     case PORTAL = 5; // Портал
-    case GATE = 6; // Калитка
+    case WICKET = 6; // Калитка
     case GRILLE = 7; // Решетка
     case DOORLET = 8; // Дверца
     case SLAB = 9; // Плита
@@ -27,7 +27,7 @@ enum PassageType: int
             static::WINDOW => 'Окно',
             static::HATCH => 'Люк',
             static::PORTAL => 'Портал',
-            static::GATE => 'Калитка',
+            static::WICKET => 'Калитка',
             static::GRILLE => 'Решетка',
             static::DOORLET => 'Дверца',
             static::SLAB => 'Плита',
@@ -36,6 +36,26 @@ enum PassageType: int
             static::LOUGH => 'Лаз',
             static::PASSAGE => 'Проход',
             static::BREACH => 'Пролом',
+        };
+    }
+
+    public static function findLabel($label): static
+    {
+        return match(strtoupper($label)) {
+            'ДВЕРЬ' => static::DOOR,
+            'ВОРОТА' => static::GATE,
+            'ОКНО' => static::WINDOW,
+            'ЛЮК' => static::HATCH,
+            'ПОРТАЛ' => static::PORTAL,
+            'КАЛИТКА' => static::WICKET,
+            'РЕШЕТКА' => static::GRILLE,
+            'ДВЕРЦА' => static::DOORLET,
+            'ПЛИТА' => static::SLAB,
+            'ДВЕРИ' => static::DOORS,
+            'ДЫРА' => static::HOLE,
+            'ЛАЗ' => static::LOUGH,
+            'ПРОХОД' => static::PASSAGE,
+            'ПРОЛОМ' => static::BREACH,
         };
     }
 }
